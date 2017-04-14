@@ -43,7 +43,7 @@ static void GPSloop()
 
 void setupGPS()
 {
-  DEBUG_PORT.begin(115200);
+  DEBUG_PORT.begin(9600);
   ss.begin(9600);
 
   DEBUG_PORT.print("Simple TinyGPS library v. ");
