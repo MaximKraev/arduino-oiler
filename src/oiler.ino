@@ -1,112 +1,80 @@
-#include <SoftwareSerial.h>
-#include <TinyGPS.h>
-
-TinyGPS gps;
-
-#define RX_PIN 4
-#define TX_PIN 3
-SoftwareSerial ss(RX_PIN, TX_PIN);
-
 #define DEBUG_PORT Serial
-
-#define BUTTON_PIN 5
+#define PUMP_BUTTON 5
 #define PUMP 2
 
+const unsigned long interval = 90000;
+const unsigned int PUMP_TICK_MS = 45;
+
+
 unsigned long previousMillis = 0;
-const unsigned int interval = 60000;
-const unsigned int PUMP_TICK_MS = 35;
-
-static void GPSloop()
-{
-  unsigned long chars;
-  unsigned short sentences, failed;
-
-  for (unsigned long start = millis(); millis() - start < 1000;)
-  {
-    while (ss.available())
-    {
-      char c = ss.read();
-      DEBUG_PORT.write(c);
-    }
-  }
-
-  gps.stats(&chars, &sentences, &failed);
-  DEBUG_PORT.print(" CHARS=");
-  DEBUG_PORT.print(chars);
-  DEBUG_PORT.print(" SENTENCES=");
-  DEBUG_PORT.print(sentences);
-  DEBUG_PORT.print(" CSUM ERR=");
-  DEBUG_PORT.println(failed);
-  if (chars == 0)
-    DEBUG_PORT.println("** No characters received from GPS: check wiring **");
-} // GPSloop
-
-void setupGPS()
-{
-  DEBUG_PORT.begin(9600);
-  ss.begin(9600);
-
-  DEBUG_PORT.print("Simple TinyGPS library v. ");
-  DEBUG_PORT.println(TinyGPS::library_version());
-  DEBUG_PORT.println("by Mikal Hart");
-  DEBUG_PORT.println();
-}
+bool isPumpButtonPressed = false;
 
 void setupPump() {
   pinMode(PUMP, OUTPUT);
+  pumpOff();
 }
 
 void setupButtons() {
-  pinMode(BUTTON_PIN, INPUT);
-  digitalWrite(BUTTON_PIN, HIGH);
+  pinMode(PUMP_BUTTON, INPUT);
+  digitalWrite(PUMP_BUTTON, HIGH);
+}
+
+void setupDebug() {
+  DEBUG_PORT.begin(9600);
+  DEBUG_PORT.println("Setup");
 }
 
 void setup() {
+  setupDebug();
+
   setupPump();
   setupButtons();
-  //setupGPS();
 }
 
 
 boolean handle_button()
 {
-  int button_pressed = !digitalRead(BUTTON_PIN); // pin low -> pressed
+  int button_pressed = !digitalRead(PUMP_BUTTON);
   return button_pressed;
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  boolean button_pressed = handle_button();
-
+  bool button_pressed = handle_button();
   unsigned long currentMillis = millis();
 
   if (currentMillis - previousMillis >= interval) {
-    // save the last time you blinked the LED
     previousMillis = currentMillis;
     dropPump();
   }
 
-  if (button_pressed) {
-    onPump();
+  if (!isPumpButtonPressed && button_pressed) {
+    pumpOn();
+    isPumpButtonPressed = true;
   }
-  else {
-    offPump();
-  }
-  //GPSloop();
 
-  delay(20);
+  if (isPumpButtonPressed && !button_pressed) {
+    pumpOff();
+    isPumpButtonPressed = false;
+  }
+
+  if (!isPumpButtonPressed) {
+    delay(20);
+  }
 }
 
-void onPump() {
+void pumpOn() {
+  DEBUG_PORT.println("pumpOn");
   digitalWrite(PUMP, LOW);
 }
 
-void offPump() {
+void pumpOff() {
+  DEBUG_PORT.println("pumpOff");
   digitalWrite(PUMP, HIGH);
 }
 
 void dropPump() {
-  onPump();
+  DEBUG_PORT.println("dropPump");
+  pumpOn();
   delay(PUMP_TICK_MS);
-  offPump();
+  pumpOff();
 }
