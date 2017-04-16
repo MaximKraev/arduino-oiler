@@ -22,6 +22,7 @@ void onGPSData(gps_fix fix) {
   }
   else {
     DEBUG_PRINT("No fix")
+    firstInit = true; // reset if we lost fix
   }
 }
 

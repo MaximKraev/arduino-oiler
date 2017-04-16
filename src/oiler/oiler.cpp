@@ -55,6 +55,7 @@ bool gpsCallback(void *Param) {
   DEBUG_PORT.print( F("Distance: ") );
   DEBUG_PORT.print( distance*1000 );
   DEBUG_PORT.println( F(" m") );
+
   if (activateDistance < distance) {
     distance -= activateDistance;
 
