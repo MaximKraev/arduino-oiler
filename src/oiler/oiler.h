@@ -1,12 +1,11 @@
 #ifndef OILER_H
 #define OILER_H
-#include <Arduino.h>
 
-#include "debug.h"
-#include "consts.h"
+#include "include.h"
 #include "pump/pump.h"
 #include "GPS/gps.h"
 #include "callback/callback.h"
+#include "rain/rain.h"
 
 void oilerCheck();
 void oilerSetup();

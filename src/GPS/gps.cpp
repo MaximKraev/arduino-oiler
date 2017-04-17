@@ -6,11 +6,21 @@ gps_fix  fix_data;
 
 NeoGPS::Location_t oldpos;
 bool firstInit = true;
+bool hasFix = false;
 
 cCallback *_distanceCallback;
+cCallback *_fixCallback;
+
+void onFixChange(bool _hasFix) {
+  _fixCallback->Execute((void *) _hasFix);
+  hasFix = _hasFix;
+}
 
 void onGPSData(gps_fix fix) {
   if (fix.valid.location) {
+    if (!hasFix) {
+      onFixChange(false);
+    }
     if (firstInit) {
       firstInit = false;
     }
@@ -23,6 +33,9 @@ void onGPSData(gps_fix fix) {
   else {
     DEBUG_PRINT("No fix")
     firstInit = true; // reset if we lost fix
+    if (hasFix) {
+      onFixChange(false);
+    }
   }
 }
 
@@ -34,10 +47,11 @@ void GPSCheck()
   }
 }
 
-void GPSSetup(TCallback &distanceCallback)
+void GPSSetup(TCallback &distanceCallback, TCallback &fixCallback)
 {
   _distanceCallback = &distanceCallback;
-  DEBUG_PORT.print( F("NMEA.INO: started\n") );
+  _fixCallback = &fixCallback;
+  DEBUG_PRINT( F("NMEA.INO: started\n") );
   gps_port.begin( 9600 );
 }
 

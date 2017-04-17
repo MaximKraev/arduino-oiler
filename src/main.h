@@ -1,4 +1,3 @@
-#include <Arduino.h>
-#include "consts.h"
-#include "debug.h"
+#include "include.h"
+
 #include "oiler/oiler.h"

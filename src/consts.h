@@ -18,6 +18,8 @@
   #define PUMP_ACTIVATE_DISTANCE 1.0 // every 1km
 
   // test values
-  #define PUMP_ACTIVATE_DISTANCE .05 // every 1km
-  #define MINIMUM_SPEED 0.1 // km/h
+  #ifdef TEST_VALUES
+    #define PUMP_ACTIVATE_DISTANCE .05 // every 1km
+    #define MINIMUM_SPEED 0.1 // km/h
+  #endif
 #endif

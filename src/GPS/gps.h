@@ -1,9 +1,7 @@
 #ifndef GPS_H
 #define GPS_H
-  #include <Arduino.h>
+  #include "include.h"
   #include <NMEAGPS.h>
-  #include "debug.h"
-  #include "consts.h"
   #include "callback/callback.h"
 
   #define RX_PIN 10
@@ -12,7 +10,7 @@
   #include <SoftwareSerial.h>
   #include "Streamers.h"
 
-  void GPSSetup(TCallback &distanceReached);
+  void GPSSetup(TCallback &distanceCallback, TCallback &fixCallback);
   void GPSCheck();
 
 #endif
