@@ -8,7 +8,8 @@ bool isRain = false;
 float activateDistance = PUMP_ACTIVATE_DISTANCE;
 
 static bool onRainStateChange(bool isRain) {
-  activateDistance = (isRain) ? PUMP_ACTIVATE_DISTANCE * RAIN_FIX : PUMP_ACTIVATE_DISTANCE;
+  activateDistance =
+      (isRain) ? PUMP_ACTIVATE_DISTANCE * RAIN_FIX : PUMP_ACTIVATE_DISTANCE;
   return true;
 }
 
@@ -17,8 +18,7 @@ static void setupPumpButton() {
   digitalWrite(PUMP_BUTTON, HIGH);
 }
 
-static bool isPumpButtonPressed()
-{
+static bool isPumpButtonPressed() {
   return !digitalRead(PUMP_BUTTON);
 }
 
@@ -46,14 +46,14 @@ static bool gpsCallback(float range) {
     distance += range;
   }
 
-  DEBUG_PRINT( F("Range: ") );
-  DEBUG_PRINT( range*1000 );
+  DEBUG_PRINT(F("Range: "));
+  DEBUG_PRINT(range * 1000);
   DEBUG_PRINT("/");
   DEBUG_PRINT(RANGE_MIN_DISTANCE*1000);
-  DEBUG_PRINTLN( F(" m") );
-  DEBUG_PRINT( F("Distance: ") );
-  DEBUG_PRINT( distance*1000 );
-  DEBUG_PRINTLN( F(" m") );
+  DEBUG_PRINTLN(F(" m"));
+  DEBUG_PRINT(F("Distance: "));
+  DEBUG_PRINT(distance * 1000);
+  DEBUG_PRINTLN(F(" m"));
 
   if (activateDistance < distance) {
     distance -= activateDistance;
@@ -91,7 +91,6 @@ void oilerSetup() {
   setupPumpButton();
   rainCallback.SetCallback(&onRainStateChange);
   rainSensorSetup(rainCallback);
-
   distanceCallback.SetCallback(&gpsCallback);
   fixCallback.SetCallback(&onFixChange);
   GPSSetup(distanceCallback, fixCallback);

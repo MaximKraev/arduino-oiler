@@ -49,7 +49,8 @@ void GPSCheck() {
 void GPSSetup(TCallbackFloat &distanceCallback, TCallbackBool &fixCallback) {
   _distanceCallback = &distanceCallback;
   _fixCallback = &fixCallback;
+  _fixCallback->Execute(false);
   DEBUG_PRINT( F("NMEA.INO: started\n") );
-  gps_port.begin( 9600 );
+  gps_port.begin(9600);
 }
 
