@@ -10,7 +10,7 @@
   #include <SoftwareSerial.h>
   #include "Streamers.h"
 
-  void GPSSetup(TCallback &distanceCallback, TCallback &fixCallback);
+  void GPSSetup(TCallbackFloat &distanceCallback, TCallbackBool &fixCallback);
   void GPSCheck();
 
 #endif

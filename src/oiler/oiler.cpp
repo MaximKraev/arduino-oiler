@@ -7,23 +7,22 @@ bool isRain = false;
 
 float activateDistance = PUMP_ACTIVATE_DISTANCE;
 
-bool onRainStateChange(void *Param) {
-  bool isRain = *(bool*) Param;
+static bool onRainStateChange(bool isRain) {
   activateDistance = (isRain) ? PUMP_ACTIVATE_DISTANCE * RAIN_FIX : PUMP_ACTIVATE_DISTANCE;
   return true;
 }
 
-void setupPumpButton() {
+static void setupPumpButton() {
   pinMode(PUMP_BUTTON, INPUT);
   digitalWrite(PUMP_BUTTON, HIGH);
 }
 
-bool isPumpButtonPressed()
+static bool isPumpButtonPressed()
 {
   return !digitalRead(PUMP_BUTTON);
 }
 
-void pumpButtonCheck() {
+static void pumpButtonCheck() {
   bool isPressed = isPumpButtonPressed();
 
   if (!pumpButtonStatus && isPressed) {
@@ -37,13 +36,12 @@ void pumpButtonCheck() {
   }
 }
 
-void distanceReached() {
+static void distanceReached() {
   dropPump(PUMP_TICK_MS);
 }
 
-bool gpsCallback(void *Param) {
+static bool gpsCallback(float range) {
 
-  float range = *(float*) Param;
   if (range > RANGE_MIN_DISTANCE && range < RANGE_MAX_DISTANCE) {
     distance += range;
   }
@@ -74,9 +72,7 @@ void oilerCheck() {
   rainSensorCheck();
 }
 
-bool onFixChange(void *Param) {
-  bool hasFix = *(int*) Param;
-
+static bool onFixChange(bool hasFix) {
   if (hasFix) {
     DEBUG_PRINTLN("Got Fix");
   } else {
@@ -86,9 +82,9 @@ bool onFixChange(void *Param) {
   return true;
 }
 
-TCallback distanceCallback;
-TCallback rainCallback;
-TCallback fixCallback;
+TCallbackFloat distanceCallback;
+TCallbackBool rainCallback;
+TCallbackBool fixCallback;
 
 void oilerSetup() {
   setupPump();

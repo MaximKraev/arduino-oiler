@@ -8,16 +8,15 @@ NeoGPS::Location_t oldpos;
 bool firstInit = true;
 bool hasFix = false;
 
-cCallback *_distanceCallback;
-cCallback *_fixCallback;
+cCallbackFloat *_distanceCallback;
+cCallbackBool *_fixCallback;
 
-void onFixChange(bool _hasFix) {
-  int fix = _hasFix ? 1 : 0;
-  _fixCallback->Execute((void *) fix);
+static void onFixChange(bool _hasFix) {
+  _fixCallback->Execute(_hasFix);
   hasFix = _hasFix;
 }
 
-void onGPSData(gps_fix fix) {
+static void onGPSData(gps_fix fix) {
   if (fix.valid.location) {
     if (!hasFix) {
       onFixChange(true);
@@ -27,7 +26,7 @@ void onGPSData(gps_fix fix) {
     }
     else {
       float range = fix.location.DistanceKm(oldpos);
-      _distanceCallback->Execute((void*) &range);
+      _distanceCallback->Execute(range);
     }
     oldpos = NeoGPS::Location_t(fix.latitudeL(), fix.longitudeL());
   }
@@ -40,16 +39,14 @@ void onGPSData(gps_fix fix) {
   }
 }
 
-void GPSCheck()
-{
+void GPSCheck() {
   while (gps.available( gps_port )) {
     fix_data = gps.read();
     onGPSData(fix_data);
   }
 }
 
-void GPSSetup(TCallback &distanceCallback, TCallback &fixCallback)
-{
+void GPSSetup(TCallbackFloat &distanceCallback, TCallbackBool &fixCallback) {
   _distanceCallback = &distanceCallback;
   _fixCallback = &fixCallback;
   DEBUG_PRINT( F("NMEA.INO: started\n") );

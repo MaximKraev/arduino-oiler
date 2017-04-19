@@ -4,6 +4,6 @@
 #include "include.h"
 #include "callback/callback.h"
 
-void rainSensorSetup(TCallback &stateChangeCallback);
+void rainSensorSetup(TCallbackBool &stateChangeCallback);
 void rainSensorCheck();
 #endif
