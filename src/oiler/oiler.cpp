@@ -75,11 +75,12 @@ void oilerCheck() {
 }
 
 bool onFixChange(void *Param) {
-  bool hasFix = *(bool*) Param;
+  bool hasFix = *(int*) Param;
+
   if (hasFix) {
-    DEBUG_PRINTLN('Got Fix');
+    DEBUG_PRINTLN("Got Fix");
   } else {
-    DEBUG_PRINTLN('Lost Fix');
+    DEBUG_PRINTLN("Lost Fix");
   }
 
   return true;

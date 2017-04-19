@@ -12,14 +12,15 @@ cCallback *_distanceCallback;
 cCallback *_fixCallback;
 
 void onFixChange(bool _hasFix) {
-  _fixCallback->Execute((void *) _hasFix);
+  int fix = _hasFix ? 1 : 0;
+  _fixCallback->Execute((void *) fix);
   hasFix = _hasFix;
 }
 
 void onGPSData(gps_fix fix) {
   if (fix.valid.location) {
     if (!hasFix) {
-      onFixChange(false);
+      onFixChange(true);
     }
     if (firstInit) {
       firstInit = false;
@@ -31,7 +32,7 @@ void onGPSData(gps_fix fix) {
     oldpos = NeoGPS::Location_t(fix.latitudeL(), fix.longitudeL());
   }
   else {
-    DEBUG_PRINT("No fix")
+    DEBUG_PRINTLN("No fix")
     firstInit = true; // reset if we lost fix
     if (hasFix) {
       onFixChange(false);
