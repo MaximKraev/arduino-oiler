@@ -68,6 +68,7 @@ static bool gpsCallback(float range) {
 
 void oilerCheck() {
   GPSCheck();
+  ledCheck();
   pumpButtonCheck();
   rainSensorCheck();
 }
@@ -75,8 +76,10 @@ void oilerCheck() {
 static bool onFixChange(bool hasFix) {
   if (hasFix) {
     DEBUG_PRINTLN("Got Fix");
+    setBlinksState(LED_FIX);
   } else {
     DEBUG_PRINTLN("Lost Fix");
+    setBlinksState(LED_NO_FIX);
   }
 
   return true;
@@ -87,11 +90,19 @@ TCallbackBool rainCallback;
 TCallbackBool fixCallback;
 
 void oilerSetup() {
+  ledSetup();
+  setBlinksState(LED_INIT);
+
+  //Pump
   setupPump();
   setupPumpButton();
+
+
   rainCallback.SetCallback(&onRainStateChange);
   rainSensorSetup(rainCallback);
+
   distanceCallback.SetCallback(&gpsCallback);
   fixCallback.SetCallback(&onFixChange);
   GPSSetup(distanceCallback, fixCallback);
+
 }

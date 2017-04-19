@@ -1,4 +1,4 @@
-#define ENABLE_DEBUG
+//#define ENABLE_DEBUG
 //#define TEST_VALUES
 
 #include <Arduino.h>

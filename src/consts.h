@@ -7,6 +7,8 @@
 #define PUMP_INTERVAL 90000
 #define PUMP_TICK_MS 40
 
+#define STATUS_LED LED_BUILTIN
+
 #define RAIN_FIX 0.6
 
 // speed calculations
