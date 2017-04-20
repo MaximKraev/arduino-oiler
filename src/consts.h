@@ -6,8 +6,9 @@
 
 #define RAIN_SENSOR 4
 
-#define PUMP_INTERVAL 90000
 #define PUMP_TICK_MS 40
+#define PUMP_BUTTON_INTERVAL 500
+#define PUMP_BUTTON_ACTIVE 50
 
 #define GPS_RX 6
 #define GPS_TX 5

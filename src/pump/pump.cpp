@@ -12,10 +12,14 @@ static void pumpOff() {
   digitalWrite(PUMP, HIGH);
 }
 
+static void pumpActivate() {
+  dropPump(PUMP_BUTTON_ACTIVE);
+}
+
 void setupPump() {
   pinMode(PUMP, OUTPUT);
   pumpOff();
-  pumpingAction = new TimedAction(500, &pumpCheck);
+  pumpingAction = new TimedAction(PUMP_BUTTON_INTERVAL, &pumpActivate);
   pumpingAction->disable();
 }
 
