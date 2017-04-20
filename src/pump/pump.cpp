@@ -1,11 +1,13 @@
 #include "pump.h"
 
-void pumpOn() {
+TimedAction *pumpingAction;
+
+static void pumpOn() {
   DEBUG_PRINTLN("pumpOn");
   digitalWrite(PUMP, LOW);
 }
 
-void pumpOff() {
+static void pumpOff() {
   DEBUG_PRINTLN("pumpOff");
   digitalWrite(PUMP, HIGH);
 }
@@ -13,6 +15,20 @@ void pumpOff() {
 void setupPump() {
   pinMode(PUMP, OUTPUT);
   pumpOff();
+  pumpingAction = new TimedAction(500, &pumpCheck);
+  pumpingAction->disable();
+}
+
+void pumpCheck() {
+  pumpingAction->check();
+}
+
+void pumpStart() {
+  pumpingAction->enable();
+}
+
+void pumpEnd() {
+  pumpingAction->disable();
 }
 
 void dropPump(int delayMs) {

@@ -26,12 +26,12 @@ static void pumpButtonCheck() {
   bool isPressed = isPumpButtonPressed();
 
   if (!pumpButtonStatus && isPressed) {
-    pumpOn();
+    pumpStart();
     pumpButtonStatus = true;
   }
 
   if (pumpButtonStatus && !isPressed) {
-    pumpOff();
+    pumpEnd();
     pumpButtonStatus = false;
   }
 }
@@ -70,6 +70,7 @@ void oilerCheck() {
   GPSCheck();
   ledCheck();
   pumpButtonCheck();
+  pumpCheck();
   rainSensorCheck();
 }
 

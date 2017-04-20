@@ -5,8 +5,8 @@
 #include <NMEAGPS.h>
 #include "callback/callback.h"
 
-#define RX_PIN 10
-#define TX_PIN 9
+#define RX_PIN GPS_RX
+#define TX_PIN GPS_TX
 
 #include <SoftwareSerial.h>
 #include "Streamers.h"

@@ -4,8 +4,11 @@
 #include "include.h"
 #include <TimedAction.h>
 
+
 void dropPump(int delayMs);
 void setupPump();
-void pumpOn();
-void pumpOff();
+void pumpStart();
+void pumpEnd();
+void pumpCheck();
+
 #endif
