@@ -30,12 +30,6 @@ static void deactivateLed() {
 }
 
 static void blink() {
-  DEBUG_PRINT("blink: ");
-  DEBUG_PRINT(currentBlink);
-  DEBUG_PRINT(" ");
-  DEBUG_PRINT(blinksPerSecond);
-  DEBUG_PRINT(" ");
-  DEBUG_PRINTLN(currentStatus);
   if (currentStatus) {
     activateLed();
   } else {
