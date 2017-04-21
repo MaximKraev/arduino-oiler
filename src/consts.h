@@ -10,10 +10,11 @@
 #define PUMP_BUTTON_INTERVAL 500
 #define PUMP_BUTTON_ACTIVE 50
 
-#define NO_FIX_TIMEOUT 5*60*1000 // 5 minutes
-#define NO_FIX_INTERVAL 1.5*60*1000 // every 1.5 minutes
+#define NO_FIX_TIMEOUT 2L*60*1000 // 5 minutes
+#define NO_FIX_INTERVAL 1.5L*60*1000 // every 1.5 minutes
 
-#define GPS_RX 6
+#define GPS_RX 10 // version 1
+//#define GPS_RX 6 // version 2
 #define GPS_TX 5
 
 #define STATUS_LED LED_BUILTIN
@@ -32,6 +33,7 @@
 #ifdef TEST_VALUES
 #define PUMP_ACTIVATE_DISTANCE .05
 #define MINIMUM_SPEED 0.1
+#define NO_FIX_TIMEOUT 0.5L*60*1000 // 0.5 minute
 #endif
 
 #endif

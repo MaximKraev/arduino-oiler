@@ -9,6 +9,9 @@ static TimedAction * noFixFailbackTimer;
 static TimedAction * noFixTimer;
 
 static bool onRainStateChange(bool _isRain) {
+  DEBUG_PRINT(F("onRainStateChange "));
+  DEBUG_PRINTLN(_isRain);
+
   static unsigned long noFixFailbackInterval = NO_FIX_INTERVAL * ((_isRain)? RAIN_FIX : 1);
   noFixFailbackTimer->setInterval(noFixFailbackInterval);
 
@@ -48,13 +51,11 @@ static void noFixFailback(bool activate) {
   noFixTimer->disable();
   if (activate) {
     noFixFailbackTimer->enable();
-    setBlinksState(LED_NO_FIX_FAILBACK);
   } else {
     DEBUG_PRINTLN(F("noFixFailback disable"));
     noFixFailbackTimer->disable();
   }
 }
-
 
 static void distanceReached() {
   dropPump(PUMP_TICK_MS);
@@ -62,9 +63,8 @@ static void distanceReached() {
 
 static void noFixIntervalReached() {
   DEBUG_PRINTLN(F("noFixIntervalReached"));
-
+  setBlinksState(LED_NO_FIX_FAILBACK);
   noFixFailback(true);
-  noFixTimer->disable();
 }
 
 static void noFixFailbackSetup() {
@@ -121,6 +121,7 @@ static bool onFixChange(bool hasFix) {
   } else {
     DEBUG_PRINTLN("Lost Fix");
     setBlinksState(LED_NO_FIX);
+    noFixTimer->reset();
     noFixTimer->enable();
   }
   return true;

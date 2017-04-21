@@ -3,6 +3,7 @@
 
 #include "include.h"
 #include "callback/callback.h"
+#include "TimedAction.h"
 
 void rainSensorSetup(TCallbackBool &stateChangeCallback);
 void rainSensorCheck();
