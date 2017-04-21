@@ -14,7 +14,8 @@
 #define LED_INIT 1
 #define LED_NO_FIX 2
 #define LED_FIX 3
-#define LED_FAILURE 4
+#define LED_NO_FIX_FAILBACK 4
+#define LED_FAILURE 5
 
 #define LED_CYCLE_INTERVAL 4000
 #define LED_BLINK_INTERVAL 200

@@ -31,7 +31,6 @@ static void onGPSData(gps_fix fix) {
     oldpos = NeoGPS::Location_t(fix.latitudeL(), fix.longitudeL());
   }
   else {
-    DEBUG_PRINTLN("No fix")
     firstInit = true; // reset if we lost fix
     if (hasFix) {
       onFixChange(false);

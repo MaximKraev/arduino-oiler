@@ -7,13 +7,13 @@
 
 #include "led.h"
 
-TimedAction *ledInterval;
-TimedAction *ledBlinks;
+static TimedAction *ledInterval;
+static TimedAction *ledBlinks;
 
-int blinksPerSecond = LED_INIT; //default 1 init state
+static int blinksPerSecond = LED_INIT; //default 1 init state
 
-int currentBlink = 0;
-int currentStatus = false;
+static int currentBlink = 0;
+static int currentStatus = false;
 
 void ledCheck() {
   ledBlinks->check();

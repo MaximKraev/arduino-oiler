@@ -10,6 +10,9 @@
 #define PUMP_BUTTON_INTERVAL 500
 #define PUMP_BUTTON_ACTIVE 50
 
+#define NO_FIX_TIMEOUT 5*60*1000 // 5 minutes
+#define NO_FIX_INTERVAL 1.5*60*1000 // every 1.5 minutes
+
 #define GPS_RX 6
 #define GPS_TX 5
 

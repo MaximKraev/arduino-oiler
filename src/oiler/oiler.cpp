@@ -1,15 +1,20 @@
 #include "oiler.h"
 
-float distance = 0;
-bool pumpButtonStatus = false;
+static float distance = 0;
+static bool pumpButtonStatus = false;
 
-bool isRain = false;
+static float activateDistance = PUMP_ACTIVATE_DISTANCE;
 
-float activateDistance = PUMP_ACTIVATE_DISTANCE;
+static TimedAction * noFixFailbackTimer;
+static TimedAction * noFixTimer;
 
-static bool onRainStateChange(bool isRain) {
+static bool onRainStateChange(bool _isRain) {
+  static unsigned long noFixFailbackInterval = NO_FIX_INTERVAL * ((_isRain)? RAIN_FIX : 1);
+  noFixFailbackTimer->setInterval(noFixFailbackInterval);
+
   activateDistance =
-      (isRain) ? PUMP_ACTIVATE_DISTANCE * RAIN_FIX : PUMP_ACTIVATE_DISTANCE;
+      (_isRain) ? PUMP_ACTIVATE_DISTANCE * RAIN_FIX : PUMP_ACTIVATE_DISTANCE;
+
   return true;
 }
 
@@ -36,8 +41,41 @@ static void pumpButtonCheck() {
   }
 }
 
+
+static void noFixFailback(bool activate) {
+  noFixFailbackTimer->reset();
+  noFixTimer->reset();
+  noFixTimer->disable();
+  if (activate) {
+    noFixFailbackTimer->enable();
+    setBlinksState(LED_NO_FIX_FAILBACK);
+  } else {
+    DEBUG_PRINTLN(F("noFixFailback disable"));
+    noFixFailbackTimer->disable();
+  }
+}
+
+
 static void distanceReached() {
   dropPump(PUMP_TICK_MS);
+}
+
+static void noFixIntervalReached() {
+  DEBUG_PRINTLN(F("noFixIntervalReached"));
+
+  noFixFailback(true);
+  noFixTimer->disable();
+}
+
+static void noFixFailbackSetup() {
+  noFixFailbackTimer = new TimedAction(NO_FIX_INTERVAL, distanceReached);
+  noFixTimer = new TimedAction(NO_FIX_TIMEOUT, noFixIntervalReached);
+  noFixFailback(false);
+}
+
+static void noFixTimerCheck() {
+  noFixTimer->check();
+  noFixFailbackTimer->check();
 }
 
 static bool gpsCallback(float range) {
@@ -72,25 +110,30 @@ void oilerCheck() {
   pumpButtonCheck();
   pumpCheck();
   rainSensorCheck();
+  noFixTimerCheck();
 }
 
 static bool onFixChange(bool hasFix) {
   if (hasFix) {
     DEBUG_PRINTLN("Got Fix");
     setBlinksState(LED_FIX);
+    noFixFailback(false);
   } else {
     DEBUG_PRINTLN("Lost Fix");
     setBlinksState(LED_NO_FIX);
+    noFixTimer->enable();
   }
-
   return true;
 }
 
-TCallbackFloat distanceCallback;
-TCallbackBool rainCallback;
-TCallbackBool fixCallback;
+static TCallbackFloat distanceCallback;
+static TCallbackBool rainCallback;
+static TCallbackBool fixCallback;
 
 void oilerSetup() {
+
+  noFixFailbackSetup();
+
   ledSetup();
   setBlinksState(LED_INIT);
 
