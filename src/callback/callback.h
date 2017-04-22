@@ -13,14 +13,20 @@ template<class T>
 class TCallback: public cCallback<T> // Inheriting
 {
 public:
-	TCallback() // constructor
+  // (You can change the callback to take more parameters or to return something)
+  typedef bool (*tFunction)(T param);
+
+  TCallback() // constructor
 	{
 		// Important : zeroing the pointer so we later can check for errors
 		pFunction = 0;
 	}
 
-	// (You can change the callback to take more parameters or to return something)
-	typedef bool (*tFunction)(T param);
+  TCallback(tFunction pFunctionPointer) // constructor
+  {
+    // Important : zeroing the pointer so we later can check for errors
+    pFunction = pFunctionPointer;
+  }
 
 	// Execute the Callback
 	virtual bool Execute(T Param) const {

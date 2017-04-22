@@ -5,6 +5,6 @@
 #include "callback/callback.h"
 #include "TimedAction.h"
 
-void rainSensorSetup(TCallbackBool &stateChangeCallback);
+void rainSensorSetup(TCallbackBool *stateChangeCallback);
 void rainSensorCheck();
 #endif

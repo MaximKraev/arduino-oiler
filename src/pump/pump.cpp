@@ -1,6 +1,6 @@
 #include "pump.h"
 
-TimedAction *pumpingAction;
+static TimedAction *pumpingAction;
 
 static void pumpOn() {
   DEBUG_PRINTLN("pumpOn");

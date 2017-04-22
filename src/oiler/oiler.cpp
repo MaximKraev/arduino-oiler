@@ -12,7 +12,8 @@ static bool onRainStateChange(bool _isRain) {
   DEBUG_PRINT(F("onRainStateChange "));
   DEBUG_PRINTLN(_isRain);
 
-  static unsigned long noFixFailbackInterval = NO_FIX_INTERVAL * ((_isRain)? RAIN_FIX : 1);
+  static unsigned long noFixFailbackInterval = NO_FIX_INTERVAL
+      * ((_isRain) ? RAIN_FIX : 1);
   noFixFailbackTimer->setInterval(noFixFailbackInterval);
 
   activateDistance =
@@ -43,7 +44,6 @@ static void pumpButtonCheck() {
     pumpButtonStatus = false;
   }
 }
-
 
 static void noFixFailback(bool activate) {
   noFixFailbackTimer->reset();
@@ -127,9 +127,9 @@ static bool onFixChange(bool hasFix) {
   return true;
 }
 
-static TCallbackFloat distanceCallback;
-static TCallbackBool rainCallback;
-static TCallbackBool fixCallback;
+static TCallbackFloat *distanceCallback;
+static TCallbackBool *rainCallback;
+static TCallbackBool *fixCallback;
 
 void oilerSetup() {
 
@@ -142,12 +142,12 @@ void oilerSetup() {
   setupPump();
   setupPumpButton();
 
-
-  rainCallback.SetCallback(&onRainStateChange);
+  rainCallback = new TCallbackBool(&onRainStateChange);
   rainSensorSetup(rainCallback);
 
-  distanceCallback.SetCallback(&gpsCallback);
-  fixCallback.SetCallback(&onFixChange);
+  distanceCallback = new TCallbackFloat(&gpsCallback);
+  fixCallback = new TCallbackBool(&onFixChange);
+
   GPSSetup(distanceCallback, fixCallback);
 
 }

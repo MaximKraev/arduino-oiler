@@ -5,8 +5,8 @@ NMEAGPS  gps;
 gps_fix  fix_data;
 
 NeoGPS::Location_t oldpos;
-bool firstInit = true;
-bool hasFix = false;
+static bool firstInit = true;
+static bool hasFix = false;
 
 cCallbackFloat *_distanceCallback;
 cCallbackBool *_fixCallback;
@@ -45,9 +45,9 @@ void GPSCheck() {
   }
 }
 
-void GPSSetup(TCallbackFloat &distanceCallback, TCallbackBool &fixCallback) {
-  _distanceCallback = &distanceCallback;
-  _fixCallback = &fixCallback;
+void GPSSetup(TCallbackFloat *distanceCallback, TCallbackBool *fixCallback) {
+  _distanceCallback = distanceCallback;
+  _fixCallback = fixCallback;
   _fixCallback->Execute(false);
   DEBUG_PRINT( F("NMEA.INO: started\n") );
   gps_port.begin(9600);

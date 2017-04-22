@@ -7,8 +7,8 @@ static TimedAction *rainCheckTimer;
 
 static bool isCurrentlyRain = false;
 
-void rainSensorSetup(TCallbackBool &stateChangeCallback) {
-  _stateChangeCallback = &stateChangeCallback;
+void rainSensorSetup(TCallbackBool *stateChangeCallback) {
+  _stateChangeCallback = stateChangeCallback;
 
 }
 

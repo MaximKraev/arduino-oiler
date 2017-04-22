@@ -11,7 +11,7 @@
 #include <SoftwareSerial.h>
 #include "Streamers.h"
 
-void GPSSetup(TCallbackFloat &distanceCallback, TCallbackBool &fixCallback);
+void GPSSetup(TCallbackFloat *distanceCallback, TCallbackBool *fixCallback);
 void GPSCheck();
 
 #endif
