@@ -56,7 +56,6 @@ void ledSetup() {
   ledBlinks = new TimedAction(LED_BLINK_INTERVAL, &blink);
   ledBlinks->disable();
   ledInterval = new TimedAction(LED_CYCLE_INTERVAL, &activate);
-  ledInterval->enable();
 }
 
 

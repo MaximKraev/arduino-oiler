@@ -7,11 +7,6 @@ static TimedAction *rainCheckTimer;
 
 static bool isCurrentlyRain = false;
 
-void rainSensorSetup(TCallbackBool *stateChangeCallback) {
-  _stateChangeCallback = stateChangeCallback;
-
-}
-
 static bool getIsRain() {
   return false; // no sensor yet
 }
@@ -27,6 +22,11 @@ static void onCheck() {
   }
 }
 
-void rainSensorCheck() {
+void rainSensorSetup(TCallbackBool *stateChangeCallback) {
+  _stateChangeCallback = stateChangeCallback;
   rainCheckTimer = new TimedAction(4000, onCheck);
+}
+
+void rainSensorCheck() {
+  rainCheckTimer->check();
 }

@@ -84,13 +84,13 @@ static bool gpsCallback(float range) {
     distance += range;
   }
 
-  DEBUG_PRINT(F("Range: "));
-  DEBUG_PRINT(range * 1000);
-  DEBUG_PRINT("/");
-  DEBUG_PRINT(RANGE_MIN_DISTANCE*1000);
-  DEBUG_PRINTLN(F(" m"));
+//  DEBUG_PRINT(F("Range: "));
+//  DEBUG_PRINT(range * 1000);
+//  DEBUG_PRINT("/");
+//  DEBUG_PRINT(RANGE_MIN_DISTANCE*1000);
+//  DEBUG_PRINTLN(F(" m"));
   DEBUG_PRINT(F("Distance: "));
-  DEBUG_PRINT(distance * 1000);
+  DEBUG_PRINT(distance);
   DEBUG_PRINTLN(F(" m"));
 
   if (activateDistance < distance) {
