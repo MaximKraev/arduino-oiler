@@ -8,54 +8,60 @@
 #include "led.h"
 
 static TimedAction *ledInterval;
-static TimedAction *ledBlinks;
-
-static int blinksPerSecond = LED_INIT; //default 1 init state
-
-static int currentBlink = 0;
-static int currentStatus = false;
+static int currentState = LED::init;
+static bool isOn = false;
 
 void ledCheck() {
-  ledBlinks->check();
   ledInterval->check();
 }
 
-
-static void activateLed() {
-  digitalWrite(STATUS_LED, HIGH);
-}
-
-static void deactivateLed() {
-  digitalWrite(STATUS_LED, LOW);
-}
-
-static void blink() {
-  if (currentStatus) {
-    activateLed();
-  } else {
-    deactivateLed();
-    currentBlink++;
-    if (currentBlink >= blinksPerSecond) {
-      ledBlinks->disable();
-    }
-  }
-  currentStatus = !currentStatus;
+static void setLed(int led, bool value) {
+  int status = value ? LED_ON: LED_OFF;
+  analogWrite(led, status);
 }
 
 
-void setBlinksState(int blinks) {
-  blinksPerSecond = blinks;
+static void led(bool r, bool g, bool b, bool builtIn) {
+  setLed(LED_RED, r);
+  setLed(LED_GREEN, g);
+  setLed(LED_BLUE, b);
+  digitalWrite(LED_BUILTIN, builtIn);
 }
 
 static void activate() {
-  currentBlink = 0;
-  ledBlinks->enable();
+  if (isOn) {
+    switch(currentState) {
+    case LED::init:
+      LED_INIT
+      break;
+    case LED::no_fix:
+      LED_NO_FIX
+      break;
+    case LED::fix:
+      LED_FIX
+      break;
+    case LED::no_fix_fallback:
+      LED_NO_FIX_FAILBACK
+      break;
+    case LED::failure:
+      LED_FAILURE
+      break;
+    }
+  } else {
+    LED_DISABLE
+  }
+  isOn = !isOn;
 }
 
+
 void ledSetup() {
-  ledBlinks = new TimedAction(LED_BLINK_INTERVAL, &blink);
-  ledBlinks->disable();
   ledInterval = new TimedAction(LED_CYCLE_INTERVAL, &activate);
 }
 
 
+void setBlinksState(int state) {
+  DEBUG_PRINT("setBlinksState: ");
+  DEBUG_PRINTLN(state);
+
+  currentState = state;
+}

@@ -8,19 +8,19 @@ static float activateDistance = PUMP_ACTIVATE_DISTANCE;
 static TimedAction * noFixFailbackTimer;
 static TimedAction * noFixTimer;
 
-static bool onRainStateChange(bool _isRain) {
-  DEBUG_PRINT(F("onRainStateChange "));
-  DEBUG_PRINTLN(_isRain);
-
-  static unsigned long noFixFailbackInterval = NO_FIX_INTERVAL
-      * ((_isRain) ? RAIN_FIX : 1);
-  noFixFailbackTimer->setInterval(noFixFailbackInterval);
-
-  activateDistance =
-      (_isRain) ? PUMP_ACTIVATE_DISTANCE * RAIN_FIX : PUMP_ACTIVATE_DISTANCE;
-
-  return true;
-}
+//static bool onRainStateChange(bool _isRain) {
+//  DEBUG_PRINT(F("onRainStateChange "));
+//  DEBUG_PRINTLN(_isRain);
+//
+//  static unsigned long noFixFailbackInterval = NO_FIX_INTERVAL
+//      * ((_isRain) ? RAIN_FIX : 1);
+//  noFixFailbackTimer->setInterval(noFixFailbackInterval);
+//
+//  activateDistance =
+//      (_isRain) ? PUMP_ACTIVATE_DISTANCE * RAIN_FIX : PUMP_ACTIVATE_DISTANCE;
+//
+//  return true;
+//}
 
 static void setupPumpButton() {
   pinMode(PUMP_BUTTON, INPUT);
@@ -63,7 +63,7 @@ static void distanceReached() {
 
 static void noFixIntervalReached() {
   DEBUG_PRINTLN(F("noFixIntervalReached"));
-  setBlinksState(LED_NO_FIX_FAILBACK);
+  setBlinksState(LED::no_fix_fallback);
   noFixFailback(true);
 }
 
@@ -109,18 +109,18 @@ void oilerCheck() {
   ledCheck();
   pumpButtonCheck();
   pumpCheck();
-  rainSensorCheck();
+//  rainSensorCheck();
   noFixTimerCheck();
 }
 
 static bool onFixChange(bool hasFix) {
   if (hasFix) {
     DEBUG_PRINTLN("Got Fix");
-    setBlinksState(LED_FIX);
+    setBlinksState(LED::fix);
     noFixFailback(false);
   } else {
     DEBUG_PRINTLN("Lost Fix");
-    setBlinksState(LED_NO_FIX);
+    setBlinksState(LED::no_fix);
     noFixTimer->reset();
     noFixTimer->enable();
   }
@@ -128,7 +128,7 @@ static bool onFixChange(bool hasFix) {
 }
 
 static TCallbackFloat *distanceCallback;
-static TCallbackBool *rainCallback;
+//static TCallbackBool *rainCallback;
 static TCallbackBool *fixCallback;
 
 void oilerSetup() {
@@ -136,14 +136,14 @@ void oilerSetup() {
   noFixFailbackSetup();
 
   ledSetup();
-  setBlinksState(LED_INIT);
+  setBlinksState(LED::init);
 
   //Pump
   setupPump();
   setupPumpButton();
 
-  rainCallback = new TCallbackBool(&onRainStateChange);
-  rainSensorSetup(rainCallback);
+//  rainCallback = new TCallbackBool(&onRainStateChange);
+//  rainSensorSetup(rainCallback);
 
   distanceCallback = new TCallbackFloat(&gpsCallback);
   fixCallback = new TCallbackBool(&onFixChange);
