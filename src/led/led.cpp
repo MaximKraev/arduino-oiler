@@ -21,11 +21,10 @@ static void setLed(int led, bool value) {
 }
 
 
-static void led(bool r, bool g, bool b, bool builtIn) {
+static void led(bool r, bool g, bool b) {
   setLed(LED_RED, r);
   setLed(LED_GREEN, g);
   setLed(LED_BLUE, b);
-  digitalWrite(LED_BUILTIN, builtIn);
 }
 
 static void activate() {

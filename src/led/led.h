@@ -14,7 +14,7 @@
 #define LED_ON 250
 #define LED_OFF 255
 
-#define RGB(red, green, blue, builtin) led(red, green, blue, builtin);
+#define RGB(red, green, blue) led(red, green, blue);
 
 enum LED {
     INIT,
@@ -24,12 +24,12 @@ enum LED {
     FAILURE
 };
 
-#define LED_INIT            RGB(0,0,0,1);
-#define LED_NO_FIX          RGB(0,0,1,0);
-#define LED_FIX             RGB(0,1,0,0);
-#define LED_NO_FIX_FAILBACK RGB(1,0,0,0);
-#define LED_FAILURE         RGB(1,1,1,1);
-#define LED_DISABLE         RGB(0,0,0,0);
+#define LED_INIT            RGB(0,0,0);
+#define LED_NO_FIX          RGB(0,0,1);
+#define LED_FIX             RGB(0,1,0);
+#define LED_NO_FIX_FAILBACK RGB(1,0,0);
+#define LED_FAILURE         RGB(1,1,1);
+#define LED_DISABLE         RGB(0,0,0);
 
 #define MAX
 
