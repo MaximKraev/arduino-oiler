@@ -8,7 +8,7 @@
 #include "led.h"
 
 static TimedAction *ledInterval;
-static int currentState = LED::init;
+static LED currentState = LED::INIT;
 static bool isOn = false;
 
 void ledCheck() {
@@ -31,19 +31,19 @@ static void led(bool r, bool g, bool b, bool builtIn) {
 static void activate() {
   if (isOn) {
     switch(currentState) {
-    case LED::init:
+    case LED::INIT:
       LED_INIT
       break;
-    case LED::no_fix:
+    case LED::NO_FIX:
       LED_NO_FIX
       break;
-    case LED::fix:
+    case LED::FIX:
       LED_FIX
       break;
-    case LED::no_fix_fallback:
+    case LED::NO_FIX_FALLBACK:
       LED_NO_FIX_FAILBACK
       break;
-    case LED::failure:
+    case LED::FAILURE:
       LED_FAILURE
       break;
     }
@@ -59,7 +59,7 @@ void ledSetup() {
 }
 
 
-void setBlinksState(int state) {
+void setBlinksState(LED state) {
   DEBUG_PRINT("setBlinksState: ");
   DEBUG_PRINTLN(state);
 

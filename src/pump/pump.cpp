@@ -4,12 +4,12 @@ static TimedAction *pumpingAction;
 
 static void pumpOn() {
   DEBUG_PRINTLN("pumpOn");
-  digitalWrite(PUMP, LOW);
+  digitalWrite(PUMP, HIGH);
 }
 
 static void pumpOff() {
   DEBUG_PRINTLN("pumpOff");
-  digitalWrite(PUMP, HIGH);
+  digitalWrite(PUMP, LOW);
 }
 
 static void pumpActivate() {

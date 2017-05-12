@@ -63,7 +63,7 @@ static void distanceReached() {
 
 static void noFixIntervalReached() {
   DEBUG_PRINTLN(F("noFixIntervalReached"));
-  setBlinksState(LED::no_fix_fallback);
+  setBlinksState(LED::NO_FIX_FALLBACK);
   noFixFailback(true);
 }
 
@@ -116,11 +116,11 @@ void oilerCheck() {
 static bool onFixChange(bool hasFix) {
   if (hasFix) {
     DEBUG_PRINTLN("Got Fix");
-    setBlinksState(LED::fix);
+    setBlinksState(LED::FIX);
     noFixFailback(false);
   } else {
     DEBUG_PRINTLN("Lost Fix");
-    setBlinksState(LED::no_fix);
+    setBlinksState(LED::NO_FIX);
     noFixTimer->reset();
     noFixTimer->enable();
   }
@@ -136,7 +136,7 @@ void oilerSetup() {
   noFixFailbackSetup();
 
   ledSetup();
-  setBlinksState(LED::init);
+  setBlinksState(LED::INIT);
 
   //Pump
   setupPump();

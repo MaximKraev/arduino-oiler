@@ -1,5 +1,5 @@
-#define ENABLE_DEBUG
-#define TEST_VALUES
+//#define ENABLE_DEBUG
+//#define TEST_VALUES
 
 #include <Arduino.h>
 #include "consts.h"

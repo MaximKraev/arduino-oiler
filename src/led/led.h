@@ -16,12 +16,12 @@
 
 #define RGB(red, green, blue, builtin) led(red, green, blue, builtin);
 
-struct LED {
-    static const int init = 1;
-    static const int no_fix = 2;
-    static const int fix = 3;
-    static const int no_fix_fallback = 4;
-    static const int failure = 5;
+enum LED {
+    INIT,
+    NO_FIX,
+    FIX,
+    NO_FIX_FALLBACK,
+    FAILURE
 };
 
 #define LED_INIT            RGB(0,0,0,1);
@@ -33,10 +33,10 @@ struct LED {
 
 #define MAX
 
-#define LED_CYCLE_INTERVAL 1000
+#define LED_CYCLE_INTERVAL 500
 
 void ledCheck();
 void ledSetup();
-void setBlinksState(int blinks);
+void setBlinksState(LED status);
 
 #endif /* SRC_LED_LED_H_ */
