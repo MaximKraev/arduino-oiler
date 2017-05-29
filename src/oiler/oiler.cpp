@@ -69,13 +69,13 @@ static void noFixIntervalReached() {
 
 static void noFixFailbackSetup() {
   noFixFailbackTimer = new TimedAction(NO_FIX_INTERVAL, distanceReached);
-  noFixTimer = new TimedAction(NO_FIX_TIMEOUT, noFixIntervalReached);
-  noFixFailback(false);
+  noFixTimer = new TimedAction(NO_FIX_START_TIMEOUT, noFixIntervalReached);
 }
 
 static void noFixTimerCheck() {
   noFixTimer->check();
   noFixFailbackTimer->check();
+  noFixFailback(false);
 }
 
 static bool gpsCallback(float range) {
@@ -115,6 +115,7 @@ void oilerCheck() {
 
 static bool onFixChange(bool hasFix) {
   if (hasFix) {
+    noFixTimer->setInterval(NO_FIX_TIMEOUT);
     DEBUG_PRINTLN("Got Fix");
     setBlinksState(LED::FIX);
     noFixFailback(false);
