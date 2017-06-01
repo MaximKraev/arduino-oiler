@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+    "ostream": "cpp",
+    "array": "cpp"
+  },
+  "cppcheck.enable":true,
+  "cppcheck.standard": [
+    "c11",
+    "c++11"
+  ],
+  "cppcheck.cppcheckPath": null
+}
