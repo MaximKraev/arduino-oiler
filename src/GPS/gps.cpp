@@ -26,7 +26,7 @@ static void onGPSData(gps_fix fix) {
     }
     else {
       float range = fix.location.DistanceKm(oldpos);
-      _distanceCallback->Execute(range);
+      _distanceCallback->Execute(range*1000);
     }
     oldpos = NeoGPS::Location_t(fix.latitudeL(), fix.longitudeL());
   }
