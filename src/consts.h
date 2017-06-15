@@ -29,13 +29,14 @@
 //#define RAIN_FIX 0.6
 
 // speed calculations
-#define DROP_RATE_MS 18375 // every 18.375 second 40 miles per hour
+#define DROP_RATE_MS 40 // every 40s second 65 km/h
 #define MINIMUM_SPEED 15.0 // km/h
 #define MAXIMUM_SPEED 200.0 // km/h
-#define RANGE_MIN_DISTANCE MINIMUM_SPEED/60/60 // km/s
-#define RANGE_MAX_DISTANCE MAXIMUM_SPEED/60/60 // km/s
+#define RANGE_MIN_DISTANCE MINIMUM_SPEED/60/60*1000 // m/s
+#define RANGE_MAX_DISTANCE MAXIMUM_SPEED/60/60*1000 // m/s
 
-#define PUMP_ACTIVATE_DISTANCE 64373.8/3600*DROP_RATE_MS/1000 // use DROP_RATE_MS on 64373.8 m/h
+#define PUMP_ACTIVATE_DISTANCE 65000/3600*DROP_RATE_MS/1000 // use DROP_RATE_MS/1000 on 65km/h
+                               // m/s    * s
 
 // test values
 #ifdef TEST_VALUES
