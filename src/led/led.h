@@ -11,7 +11,7 @@
 #include "include.h"
 #include <TimedAction.h>
 
-#define LED_ON 250
+#define LED_ON 240
 #define LED_OFF 255
 
 #define RGB(red, green, blue) led(red, green, blue);
@@ -33,7 +33,7 @@ enum LED {
 
 #define MAX
 
-#define LED_CYCLE_INTERVAL 500
+#define LED_CYCLE_INTERVAL 450
 
 void ledCheck();
 void ledSetup();

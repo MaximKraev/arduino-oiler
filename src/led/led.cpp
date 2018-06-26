@@ -7,12 +7,12 @@
 
 #include "led.h"
 
-static TimedAction *ledInterval;
+//static TimedAction *ledInterval;
 static LED currentState = LED::INIT;
 static bool isOn = false;
 
 void ledCheck() {
-  ledInterval->check();
+  //ledInterval->check();
 }
 
 static void setLed(int led, bool value) {
@@ -28,7 +28,7 @@ static void led(bool r, bool g, bool b) {
 }
 
 static void activate() {
-  if (isOn) {
+//  if (isOn) {
     switch(currentState) {
     case LED::INIT:
       LED_INIT
@@ -46,15 +46,15 @@ static void activate() {
       LED_FAILURE
       break;
     }
-  } else {
-    LED_DISABLE
-  }
-  isOn = !isOn;
+//  } else {
+//    LED_DISABLE
+//  }
+//  isOn = !isOn;
 }
 
 
 void ledSetup() {
-  ledInterval = new TimedAction(LED_CYCLE_INTERVAL, &activate);
+ // ledInterval = new TimedAction(LED_CYCLE_INTERVAL, &activate);
 }
 
 
@@ -63,4 +63,5 @@ void setBlinksState(LED state) {
   DEBUG_PRINTLN(state);
 
   currentState = state;
+  activate();
 }

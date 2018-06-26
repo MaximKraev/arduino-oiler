@@ -2,7 +2,7 @@
 
 static float distance = 0;
 static bool pumpButtonStatus = false;
-
+static bool startup = true;
 static float activateDistance = PUMP_ACTIVATE_DISTANCE;
 
 static TimedAction * noFixFailbackTimer;
@@ -50,6 +50,7 @@ static void noFixFailback(bool activate) {
   noFixTimer->reset();
   noFixTimer->disable();
   if (activate) {
+    DEBUG_PRINTLN(F("noFixFailback enable"));
     noFixFailbackTimer->enable();
   } else {
     DEBUG_PRINTLN(F("noFixFailback disable"));
@@ -62,20 +63,22 @@ static void distanceReached() {
 }
 
 static void noFixIntervalReached() {
+  startup = false;
   DEBUG_PRINTLN(F("noFixIntervalReached"));
   setBlinksState(LED::NO_FIX_FALLBACK);
   noFixFailback(true);
 }
 
 static void noFixFailbackSetup() {
+  setBlinksState(LED::NO_FIX);
   noFixFailbackTimer = new TimedAction(NO_FIX_INTERVAL, distanceReached);
+  noFixFailbackTimer->disable();
   noFixTimer = new TimedAction(NO_FIX_START_TIMEOUT, noFixIntervalReached);
 }
 
 static void noFixTimerCheck() {
   noFixTimer->check();
   noFixFailbackTimer->check();
-  noFixFailback(false);
 }
 
 static bool gpsCallback(float range) {
@@ -111,6 +114,10 @@ void oilerCheck() {
 }
 
 static bool onFixChange(bool hasFix) {
+  if (startup && !hasFix) {
+    return true;
+  }
+
   if (hasFix) {
     noFixTimer->setInterval(NO_FIX_TIMEOUT);
     DEBUG_PRINTLN("Got Fix");
@@ -134,7 +141,6 @@ void oilerSetup() {
   noFixFailbackSetup();
 
   ledSetup();
-  setBlinksState(LED::INIT);
 
   //Pump
   setupPump();
@@ -147,5 +153,4 @@ void oilerSetup() {
   fixCallback = new TCallbackBool(&onFixChange);
 
   GPSSetup(distanceCallback, fixCallback);
-
 }
