@@ -6,6 +6,7 @@ static TimedAction *pumpActiveAction;
 static void pumpOn() {
   DEBUG_PRINTLN("pumpOn");
   digitalWrite(PUMP, HIGH);
+  setPriorityBlinksState(LED::PUMP_ACTIVE);
   pumpActiveAction->reset();
   pumpActiveAction->enable();
 }
@@ -13,6 +14,7 @@ static void pumpOn() {
 static void pumpOff() {
   DEBUG_PRINTLN("pumpOff");
   digitalWrite(PUMP, LOW);
+  offPriorityBlinksState();
   pumpActiveAction->disable();
 }
 

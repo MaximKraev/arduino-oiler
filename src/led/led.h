@@ -11,8 +11,8 @@
 #include "include.h"
 #include <TimedAction.h>
 
-#define LED_ON 240
-#define LED_OFF 255
+#define LED_ON LOW
+#define LED_OFF HIGH
 
 #define RGB(red, green, blue) led(red, green, blue);
 
@@ -21,7 +21,8 @@ enum LED {
     NO_FIX,
     FIX,
     NO_FIX_FALLBACK,
-    FAILURE
+    FAILURE,
+    PUMP_ACTIVE
 };
 
 #define LED_INIT            RGB(0,0,0);
@@ -30,13 +31,13 @@ enum LED {
 #define LED_NO_FIX_FAILBACK RGB(1,0,0);
 #define LED_FAILURE         RGB(1,1,1);
 #define LED_DISABLE         RGB(0,0,0);
-
-#define MAX
+#define LED_PUMP LED_DISABLE;
 
 #define LED_CYCLE_INTERVAL 450
 
 void ledCheck();
 void ledSetup();
 void setBlinksState(LED status);
-
+void setPriorityBlinksState(LED state);
+void offPriorityBlinksState();
 #endif /* SRC_LED_LED_H_ */

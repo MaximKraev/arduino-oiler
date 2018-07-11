@@ -9,7 +9,7 @@
 
 //static TimedAction *ledInterval;
 static LED currentState = LED::INIT;
-static bool isOn = false;
+static LED overrideState = LED::INIT;
 
 void ledCheck() {
   //ledInterval->check();
@@ -17,7 +17,7 @@ void ledCheck() {
 
 static void setLed(int led, bool value) {
   int status = value ? LED_ON: LED_OFF;
-  analogWrite(led, status);
+  digitalWrite(led, status);
 }
 
 
@@ -28,32 +28,39 @@ static void led(bool r, bool g, bool b) {
 }
 
 static void activate() {
-//  if (isOn) {
-    switch(currentState) {
-    case LED::INIT:
-      LED_INIT
-      break;
-    case LED::NO_FIX:
-      LED_NO_FIX
-      break;
-    case LED::FIX:
-      LED_FIX
-      break;
-    case LED::NO_FIX_FALLBACK:
-      LED_NO_FIX_FAILBACK
-      break;
-    case LED::FAILURE:
-      LED_FAILURE
-      break;
+  LED state = currentState;
+  if (overrideState != LED::INIT) {
+    state = overrideState;
+  }
+  switch (state)
+  {
+  case LED::INIT:
+    LED_INIT
+    break;
+  case LED::NO_FIX:
+    LED_NO_FIX
+    break;
+  case LED::FIX:
+    LED_FIX
+    break;
+  case LED::NO_FIX_FALLBACK:
+    LED_NO_FIX_FAILBACK
+    break;
+  case LED::FAILURE:
+    LED_FAILURE
+    break;
+  case LED::PUMP_ACTIVE:
+    LED_PUMP
+    break;
     }
-//  } else {
-//    LED_DISABLE
-//  }
-//  isOn = !isOn;
+
 }
 
 
 void ledSetup() {
+  pinMode(LED_RED, OUTPUT);
+  pinMode(LED_GREEN, OUTPUT);
+  pinMode(LED_BLUE, OUTPUT);
  // ledInterval = new TimedAction(LED_CYCLE_INTERVAL, &activate);
 }
 
@@ -65,3 +72,18 @@ void setBlinksState(LED state) {
   currentState = state;
   activate();
 }
+
+void setPriorityBlinksState(LED state) {
+  DEBUG_PRINT("setPriorityBlinksState: ");
+  DEBUG_PRINTLN(state);
+
+  overrideState = state;
+  activate();
+}
+
+void offPriorityBlinksState() {
+  DEBUG_PRINTLN("offPriorityBlinksState: ");
+  overrideState = LED::INIT;
+  activate();
+}
+

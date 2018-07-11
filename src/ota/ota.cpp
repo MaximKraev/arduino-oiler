@@ -1,14 +1,20 @@
+#ifdef ARDUINO_ESP8266_NODEMCU
 #include "ota.h"
 
 bool otaEnabled = false;
+bool wifiOff = false;
 
-void enableOta() {
-  DEBUG_PRINTLN("enableOTA");
+void enableOta()
+{
   if (otaEnabled) {
     return;
   }
+  DEBUG_PRINTLN("enableOTA");
+
   otaEnabled = true;
   ArduinoOTA.onStart([]() {
+    DEBUG_PRINTLN(F("OTA on start"));
+
     String type;
     if (ArduinoOTA.getCommand() == U_FLASH) {
       type = "sketch";
@@ -50,10 +56,14 @@ void onConnect() {
   enableOta();
 }
 
+// crashing
 void stopWifi() {
+  wifiOff = true;
   DEBUG_PRINTLN("stopWifi");
   WiFi.mode(WIFI_OFF);
+  DEBUG_PRINTLN("Sleep begin");
   WiFi.forceSleepBegin();
+  digitalWrite(2, LOW);
 }
 
 void WiFiEvent(WiFiEvent_t event) {
@@ -66,6 +76,8 @@ void WiFiEvent(WiFiEvent_t event) {
 
 void initWifi() {
   DEBUG_PRINTLN("initWifi");
+  digitalWrite(2, HIGH);
+
   WiFi.persistent(false);
   WiFi.onEvent(WiFiEvent, WIFI_EVENT_ANY);
   WiFi.softAP(OILER_SSID, OILER_PASSWORD);
@@ -76,9 +88,10 @@ void otaSetup() {
 }
 
 void otaLoop() {
-  if (!otaEnabled && millis() > 3*MIN) {
+  if (!otaEnabled && !wifiOff && millis() > WIFI_OTA_WAIT) {
     stopWifi();
   } else if (otaEnabled) {
     ArduinoOTA.handle();
   }
 }
+#endif

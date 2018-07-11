@@ -24,17 +24,20 @@ static TimedAction * noFixTimer;
 
 static void setupPumpButton() {
   pinMode(PUMP_BUTTON, INPUT);
-  digitalWrite(PUMP_BUTTON, HIGH);
+  //digitalWrite(PUMP_BUTTON, HIGH);
 }
 
 static bool isPumpButtonPressed() {
-  return !digitalRead(PUMP_BUTTON);
+  int temp = digitalRead(PUMP_BUTTON);
+  return temp == HIGH;
 }
 
 static void pumpButtonCheck() {
   bool isPressed = isPumpButtonPressed();
-
-  if (!pumpButtonStatus && isPressed) {
+  DEBUG_PRINT(F("isPressed  "));
+  DEBUG_PRINTLN(isPressed);
+  if (!pumpButtonStatus && isPressed)
+  {
     pumpStart();
     pumpButtonStatus = true;
   }
@@ -82,6 +85,9 @@ static void noFixTimerCheck() {
 }
 
 static bool gpsCallback(float range) {
+  DEBUG_PRINT(F("Went: "));
+  DEBUG_PRINT(range);
+  DEBUG_PRINTLN(F(" m"));
 
   if (range < RANGE_MIN_DISTANCE || range > RANGE_MAX_DISTANCE) {
     return false;
