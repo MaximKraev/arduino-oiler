@@ -3,7 +3,7 @@
 
 #ifdef ARDUINO_ESP8266_NODEMCU
   #define NODEMCU
-  #define OTA_SUPPORTED
+//  #define OTA_SUPPORTED
 #endif
 
 #ifndef NODEMCU
@@ -42,7 +42,7 @@
 
 // failback
 #define NO_FIX_TIMEOUT SECOND*30 // 30 sec minutes if we lost fix
-#define NO_FIX_INTERVAL SECOND*30 // every 30 seconds
+#define NO_FIX_INTERVAL SECOND*60 // every 30 seconds
 #define NO_FIX_START_TIMEOUT MINUTE*5 // start timeout waiting for fix
 
 //#define RAIN_FIX 0.6
@@ -54,7 +54,7 @@
 #define RANGE_MIN_DISTANCE MINIMUM_SPEED/3600*1000 // m/s
 #define RANGE_MAX_DISTANCE MAXIMUM_SPEED/3600*1000 // m/s
 
-#define PUMP_ACTIVATE_DISTANCE 900L // every 900 meters
+#define PUMP_ACTIVATE_DISTANCE 1500L // every 900 meters
 
 //ota
 #define WIFI_OTA_WAIT MINUTE*5

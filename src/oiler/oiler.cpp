@@ -34,8 +34,8 @@ static bool isPumpButtonPressed() {
 
 static void pumpButtonCheck() {
   bool isPressed = isPumpButtonPressed();
-  DEBUG_PRINT(F("isPressed  "));
-  DEBUG_PRINTLN(isPressed);
+  //DEBUG_PRINT(F("isPressed  "));
+  //DEBUG_PRINTLN(isPressed);
   if (!pumpButtonStatus && isPressed)
   {
     pumpStart();
