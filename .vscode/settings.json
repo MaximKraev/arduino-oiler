@@ -1,0 +1,19 @@
+{
+  "files.associations": {
+    "ostream": "cpp",
+    "array": "cpp",
+    "iterator": "cpp",
+    "locale": "cpp",
+    "string": "cpp"
+  },
+  "cppcheck.enable":true,
+  "cppcheck.standard": [
+    "c11",
+    "c++11"
+  ],
+  "cppcheck.cppcheckPath": null,
+  "terminal.integrated.env.osx": {
+    "PATH": "/Users/mkraev/.platformio/penv/bin:/Users/mkraev/.platformio/penv:node_modules/.bin:/Users/mkraev/bin:/usr/local/opt/curl/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "PLATFORMIO_CALLER": "vscode"
+  }
+}
